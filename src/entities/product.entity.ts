@@ -1,4 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { v4 as uuid } from "uuid"
+
 
 @Entity('products')
 export class Product {
@@ -6,10 +8,10 @@ export class Product {
   @PrimaryGeneratedColumn("uuid")
   id: string
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", length: 60 })
   name: string
 
-  @Column({type: "decimal"})
+  @Column({type: "decimal", precision: 15, scale: 2})
   price: number
 
   @CreateDateColumn({
@@ -18,4 +20,9 @@ export class Product {
   })
   createdAt: Date
 
+  constructor() {
+    if (!this.id) {
+      this.id = uuid()
+    }
+  }
 }

@@ -20,9 +20,9 @@ export class Product {
   })
   createdAt: Date
 
-  constructor() {
-    if (!this.id) {
-      this.id = uuid()
-    }
-  }
+  // constructor() {
+  //   if (!this.id) {
+  //     this.id = uuid()
+  //   }
+  // }
 }

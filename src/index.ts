@@ -6,7 +6,7 @@ import cors from 'cors'
 dotenv.config()
 
 import "./connection.js"
-import produtoController from './controllers/produto.controller.js'
+import produtoController from '@/controllers/produto.controller.js'
 
 const PORT = process.env.PORT || 8080
 

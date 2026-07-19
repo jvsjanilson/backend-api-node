@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import AppDataSource from '@/connection.js'
+import AppDataSource from '@/database/connection.js'
 import { Product } from '@/entities/product.entity.js'
 import { validate as isUUID } from "uuid"
 import { validate } from 'class-validator'

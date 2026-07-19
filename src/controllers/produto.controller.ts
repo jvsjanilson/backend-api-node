@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import AppDataSource from '../connection.js'
 import { Product } from '../entities/product.entity.js'
 import { validate as isUUID } from "uuid"
+import { validate } from 'class-validator'
 
 class ProdutoController {
 
@@ -19,6 +20,13 @@ class ProdutoController {
     const produto = new Product()
     produto.name = name
     produto.price = price;
+
+    const errors = await validate(produto)
+
+    if (errors.length > 0) {
+      return response.status(422).json(errors)
+    }
+
     const produtoRepository = AppDataSource.getRepository(Product)
     const res = await produtoRepository.save(produto)
     return response.status(201).json(res)
@@ -40,6 +48,11 @@ class ProdutoController {
 
     produto.name = name
     produto.price = price;
+    const errors = await validate(produto)
+
+    if (errors.length > 0) {
+      return res.status(422).json(errors)
+    }
     try {
       const produtoUpd = await produtoRepository.save(produto);
       return res.status(200).json(produtoUpd)

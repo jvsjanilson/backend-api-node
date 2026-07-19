@@ -1,6 +1,5 @@
+import { IsNotEmpty, Length, IsPositive } from "class-validator"
 import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
-import { v4 as uuid } from "uuid"
-
 
 @Entity('products')
 export class Product {
@@ -9,9 +8,13 @@ export class Product {
   id: string
 
   @Column({ type: "varchar", length: 60 })
+  @IsNotEmpty()
+  @Length(3, 255)
   name: string
 
   @Column({type: "decimal", precision: 15, scale: 2})
+  @IsNotEmpty()
+  @IsPositive()
   price: number
 
   @CreateDateColumn({
@@ -19,10 +22,4 @@ export class Product {
     type: 'timestamp'
   })
   createdAt: Date
-
-  // constructor() {
-  //   if (!this.id) {
-  //     this.id = uuid()
-  //   }
-  // }
 }

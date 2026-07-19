@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsPositive, Length } from "class-validator";
 
-export default class ProdutoCreateDto {
+export class ProdutoCreateDto {
 
   @IsNotEmpty()
   @Length(3, 255)
@@ -10,4 +10,8 @@ export default class ProdutoCreateDto {
   @IsPositive()
   price: number;
 
+}
+
+export class ProdutoUpdateDto extends ProdutoCreateDto {
+  id: string
 }

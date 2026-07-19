@@ -2,6 +2,12 @@ import "reflect-metadata"
 import { DataSource } from "typeorm"
 import { Product } from "@/entities/product.entity.js"
 
+import path from "path"
+import { fileURLToPath } from "url"
+
+// recria __filename e __dirname
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -12,8 +18,7 @@ const AppDataSource = new DataSource({
   database: "dbdados",
   synchronize: true,
   logging: true,
-  //entities: ["src/**/*.entity.ts"],
-  entities:[Product],
+  entities: [path.join(__dirname, "../entities/*.{ts,js}")],
   subscribers: [],
   migrations: []
 })

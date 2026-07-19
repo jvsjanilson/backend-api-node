@@ -3,34 +3,38 @@ import AppDataSource from '@/database/connection.js'
 import { Product } from '@/entities/product.entity.js'
 import { validate as isUUID } from "uuid"
 import { validate } from 'class-validator'
+import { ProdutoRepository } from '@/repositories/produto.repository.js'
+import ProdutoCreateDto from '@/dtos/create.produto.js'
 
 class ProdutoController {
+  private repo: ProdutoRepository
 
-  async findAll(request: Request, response: Response) : Promise<Response> {
-    const produtoRepository = AppDataSource.getRepository(Product)
+  constructor() {
+    this.repo = new ProdutoRepository()
+  }
 
-    const produtos = await produtoRepository.find()
-    return response.status(200).send({
+
+  findAll = async (_: Request, response: Response) : Promise<Response> => {
+    const produtos = await this.repo.getAll()
+    return response.status(200).json({
       data: produtos
     });
   }
 
-  async create (request: Request, response: Response) : Promise<Response> {
+  create = async (request: Request, response: Response) : Promise<Response>  => {
     const {name, price } = request.body;
-    const produto = new Product()
-    produto.name = name
-    produto.price = price;
+    const dto = new ProdutoCreateDto()
+    dto.name = name
+    dto.price = price
 
-    const errors = await validate(produto)
+    const errors = await validate(dto)
 
     if (errors.length > 0) {
       return response.status(422).json(errors)
     }
 
-    const produtoRepository = AppDataSource.getRepository(Product)
-    const res = await produtoRepository.save(produto)
+    const res = await this.repo.store(dto)
     return response.status(201).json(res)
-
   }
 
   async update(req: Request, res: Response) : Promise<Response> {
